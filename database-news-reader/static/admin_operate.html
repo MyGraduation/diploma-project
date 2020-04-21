@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin</title>
+</head>
+<style>
+      .left {
+            width: 35%;    /*这里是百分比或者像素值，对应下面的center就是百分比或者像素值*/
+            height: 200px;
+            float: left;
+        }
+        .right {
+            width: 55%;  /*这里是百分比或者像素值，对应下面的center就是百分比或者像素值*/
+            height: 200px;
+            float: right;
+        }
+        .center {
+            height: 200px;
+            margin: auto;
+        }
+		body {
+				background-image:url("./img/manager.jpg");
+		}
+		.button {
+				background-color: #4CAF50; /* Green */
+		border: none;
+		color: white;
+		padding: 15px 32px;
+				 text-align: center;
+				 text-decoration: none;
+		display: inline-block;
+				 font-size: 16px;
+		}
+		.input_users { width: 60%; overflow: auto; word-break: break-all; }
+</style>
+
+    <script>
+		var adminName;
+		var adminPasswd;
+
+		function trim(str) {   
+			return str.replace(/(^\s*)|(\s*$)/g, '');   
+		}  
+		function GetQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg); 
+			var context = "";
+			if (r != null)
+			context = r[2];
+			reg = null;
+			r = null;
+			return context == null || context == "" || context == "undefined" ? "" : context;
+		}
+
+		function setAdminInfo() {
+			var strCookie=document.cookie;
+			var arrCookie=strCookie.split(";");
+			for(var i = 0; i < arrCookie.length; i++){
+				var arr=arrCookie[i].split("=");
+				if("adminName" == trim(arr[0])) {
+					adminName = arr[1];
+				}
+				if("adminPasswd" == trim(arr[0]))
+					adminPasswd = arr[1];
+				}
+			if(adminName == "" || adminPasswd == ""){
+				adminName = GetQueryString("admin_name");
+				adminPasswd = GetQueryString("admin_passwd");
+				if(adminName == "" || adminPasswd == ""){
+					alert("管理员身份验证失败！");
+					window.location.href = "index.html";
+				}
+			}
+		}
+
+		function authorizeInfo() {
+			return "?admin_name=" + adminName + "&&admin_passwd=" + adminPasswd;
+		}
+
+		function sendRequest(method, route, text) {
+            var url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port: '') 
+					  + "/v1/" + route + authorizeInfo();
+            var request = new XMLHttpRequest();
+            request.open(method, url);
+            request.send(text);
+			return request
+		}
+
+
+        function read_infos(){
+			var request = sendRequest("GET", "query_manager_info", null);
+            request.onreadystatechange = function() {
+                if (request.readyState === 4 && request.status === 200) {
+                    var objs = JSON.parse(request.responseText);
+					var id_text = "";
+					var mail_text = "";
+					var passwd_text = "";
+					var level_text = "";
+					for (i in objs) {
+						id_text = id_text + objs[i].id + "<br/>";
+						mail_text = mail_text + objs[i].mail + "<br/>";
+						passwd_text = passwd_text + objs[i].passwd + "<br/>";
+						level_text = level_text + objs[i].level + "<br/>";
+					}
+                    document.getElementById("id_list").innerHTML = id_text;
+                    document.getElementById("mail_list").innerHTML = mail_text;
+                    document.getElementById("passwd_list").innerHTML = passwd_text;
+                    document.getElementById("level_list").innerHTML = level_text;
+                }else if(request.status == 401){
+					window.location.href="index.html";
+				}
+            }
+        }
+
+		function loopUserManage() {
+			window.location.href="user_manage.html";
+		}
+
+        function validateAdmin(){
+			var request = sendRequest("GET", "check", null);
+            request.onreadystatechange = function() {
+                if (request.readyState === 4 && request.status === 200) {
+					return
+				}else if(request.status == 401) {
+					window.location.href="index.html";
+				}
+            }
+        }
+
+		function deleteUser() {
+			alert("暂不支持");
+		}
+
+		setAdminInfo();
+		validateAdmin();
+        read_infos();
+        setInterval(read_infos, 5000);
+
+    </script>
+<body>
+
+<!-- #######  YAY, I AM THE SOURCE EDITOR! #########-->
+<h1 style="text-align: center;"><span style="color: #ff6600;">NewsReader管理台</span></h1>
+<hr />
+<div class="left"> <a style="color: blue;font-size:20px">
+operating list：<br/>
+<textarea 
+	id="input_user_list" 
+	style="resize:none;width:320px;height:600px;"
+	class="input_users" 
+	style="resize:none"
+	>
+</textarea>
+
+</div>
+<div class="right">
+	<input type="text" id="user_num" disabled="disabled" style="border-style:none;position:absolute;left:666px;top:98px;color:green;width:90px;height:20px;font-size:20px;background:none;">
+	<input type="text" id="online_user_num" disabled="disabled" style="border-style:none;position:absolute;left:946px;top:98px;color:green;width:90px;height:20px;font-size:20px;background:none;">
+	<input type="text" id="key_num" disabled="disabled" style="border-style:none;position:absolute;left:1185px;top:98px;color:green;width:90px;height:20px;font-size:20px;background:none;">
+	<div style="position:absolute;left:600px;top:100px">
+        <a style="color: blue;font-size:25px">ID<var><a><br/>
+        <p id="id_list">暂无数据</p>
+    </div>
+	<div style="position:absolute;left:750px;top:100px">
+        <a style="color: blue;font-size:25px">邮箱<var><a><br/>
+        <p id="mail_list">暂无数据</p>
+    </div>
+	<div style="position:absolute;left:1000px;top:100px">
+        <a style="color: red;font-size:25px">密码<var><a><br/>
+        <p id="passwd_list">暂无数据</p>
+    </div>
+	<div style="position:absolute;left:1250px;top:100px">
+        <a style="color: green;font-size:25px">等级<var><a><br/>
+        <p id="level_list">暂无数据</p>
+    </div>
+</div>
+<div style="position:absolute;left:360px;top:100px">
+    <br/>
+  <button onmousedown="addUser()" class="button"  style="cursor: pointer;padding: 15px 48px;">添加用户</button>
+    <br/>
+    <br/>
+  <button onmousedown="deleteUser()" class="button" style="cursor: pointer;padding: 15px 48px;">删除用户</button>
+    <br/>
+    <br/>
+  <button onmousedown="loopUserManage()" class="button" style="cursor: pointer;padding: 15px 48px;">用户管理</button>
+    <br/>
+    <br/>
+  <button onmousedown="addRandKey()" class="button" style="cursor: pointer;padding: 15px 48px;">处理反馈</button>
+    <br/>
+    <br/>
+  <button onmousedown="document.location.reload()" class="button" style="cursor: pointer;padding: 15px 64px;">刷新</button>
+
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+
+</body>
+</html>
+

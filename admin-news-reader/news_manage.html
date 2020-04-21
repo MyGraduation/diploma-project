@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin</title>
+</head>
+<style>
+      .left {
+            width: 35%;    /*这里是百分比或者像素值，对应下面的center就是百分比或者像素值*/
+            height: 200px;
+            float: left;
+        }
+        .right {
+            width: 65%;  /*这里是百分比或者像素值，对应下面的center就是百分比或者像素值*/
+            height: 200px;
+            float: right;
+			max-width:880px;
+        }
+        .center {
+            height: 200px;
+            margin: auto;
+        }
+		body {
+				background-image:url("./img/manager.jpg");
+		}
+		.button {
+				background-color: #4CAF50; /* Green */
+		border: none;
+		color: white;
+		padding: 15px 32px;
+				 text-align: center;
+				 text-decoration: none;
+		display: inline-block;
+				 font-size: 16px;
+		}
+		.input_users { width: 60%; overflow: auto; word-break: break-all; }
+</style>
+
+    <script>
+		var adminName;
+		var adminPasswd;
+		var curPage = 1;
+		var totalPage = 0;
+		var state = 0; // 0代表所有新闻状态，1代表查询状态
+
+		function trim(str) {   
+			return str.replace(/(^\s*)|(\s*$)/g, '');   
+		}  
+		function GetQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg); 
+			var context = "";
+			if (r != null)
+			context = r[2];
+			reg = null;
+			r = null;
+			return context == null || context == "" || context == "undefined" ? "" : context;
+		}
+
+		function setAdminInfo() {
+			var strCookie=document.cookie;
+			var arrCookie=strCookie.split(";");
+			for(var i = 0; i < arrCookie.length; i++){
+				var arr=arrCookie[i].split("=");
+				if("adminName" == trim(arr[0])) {
+					adminName = arr[1];
+				}
+				if("adminPasswd" == trim(arr[0]))
+					adminPasswd = arr[1];
+				}
+			if(adminName == "" || adminPasswd == ""){
+				adminName = GetQueryString("admin_name");
+				adminPasswd = GetQueryString("admin_passwd");
+				if(adminName == "" || adminPasswd == ""){
+					alert("管理员身份验证失败！");
+					window.location.href = "index.html";
+				}
+			}
+		}
+
+		function authorizeInfo() {
+			return "?admin_name=" + adminName + "&&admin_passwd=" + adminPasswd;
+		}
+
+		function sendRequest(method, route, text) {
+            var url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port: '') 
+					  + "/v1/" + route + authorizeInfo();
+            var request = new XMLHttpRequest();
+            request.open(method, url);
+            request.send(text);
+			return request
+		}
+
+		function showPageInfo() {
+			var strNewsNum = "当前第" + curPage.toString() + "页,共" + totalPage.toString() + "页";
+			document.getElementById("news_num").value = strNewsNum;
+		}
+
+		function searchNews() {
+			if(state == 0) {
+				curPage = 1;
+			}
+			var category = document.getElementById("search_list").value;
+			if (category == "") {
+				read_infos();
+				return;
+			}           
+			var url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port: '') + "/v1/search_news_meta";
+			url += authorizeInfo() + "&&category=" + category + "&&offset=" + curPage;
+			//alert(url);
+			var request = new XMLHttpRequest();
+			request.open("POST", url);
+            request.send();
+			show_infos(request);
+			state = 1;
+		}
+
+		function read_infos() {
+			var request = sendRequest("POST", "query_news_meta", curPage);
+			show_infos(request);
+		}
+
+        function show_infos(request){
+            request.onreadystatechange = function() {
+                if (request.readyState === 4 && request.status === 200) {
+                    var resp = JSON.parse(request.responseText);
+					var objs = resp.metas;
+					var id_text = "";
+					var title_text = "";
+					var link_text = "";
+					var time_text = "";
+					var source_text = "";
+					var cate_text = "";
+					
+					totalPage = parseInt(resp.count / 35) + 1;
+					showPageInfo();
+
+					for (i in objs) {
+						id_text = id_text + objs[i].id + "<br/>";
+						//title_text = title_text + objs[i].title + "<br/>";
+						title_text = title_text + "<a href=" + objs[i].link + ">" + objs[i].title + "</a>" + "<br/>";
+						link_text = link_text + objs[i].link + "<br/>";
+						time_text = time_text + objs[i].tsmp + "<br/>";
+						source_text = source_text + objs[i].source + "<br/>";
+						cate_text = cate_text + objs[i].tag + "<br/>";
+
+					}
+                    document.getElementById("id_list").innerHTML = id_text;
+                    document.getElementById("title_list").innerHTML = title_text;
+                    document.getElementById("time_list").innerHTML = time_text;
+                    document.getElementById("cate_list").innerHTML = cate_text;
+                    document.getElementById("source_list").innerHTML = source_text;
+                    document.getElementById("link_list").innerHTML = link_text;
+
+                }else if(request.status == 401){
+					window.location.href="index.html";
+				}
+            }
+        }
+
+        function validateAdmin(){
+			var request = sendRequest("GET", "check", null);
+            request.onreadystatechange = function() {
+                if (request.readyState === 4 && request.status === 200) {
+					return
+				}else if(request.status == 401) {
+					window.location.href="index.html";
+				}
+            }
+        }
+
+		function loopToUserManage() {
+			 window.location.href="user_manage.html";
+		}
+
+		function loopPage() {
+			var text = document.getElementById("loop_list").value;
+			if (text == "") {
+				return;
+			}
+			n = parseInt(text);
+			if (isNaN(n) || n > totalPage || n < 1) {
+				document.getElementById("loop_list").value = "";
+				return
+			}
+			curPage = n;
+			showPageInfo();
+			document.getElementById("loop_list").value = "";
+			if(state == 0) {
+				read_infos();
+			}else {
+				searchNews();
+			}
+		}
+		
+		function nextPage() {
+			curPage = curPage + 1 > totalPage ? curPage : curPage + 1;
+			showPageInfo();
+			if(state == 0) {
+				read_infos();
+			}else {
+				searchNews();
+			}
+		}
+
+		function lastPage() {
+			curPage = curPage - 1 < 1 ? curPage : curPage - 1;
+			showPageInfo();
+			if(state == 0) {
+				read_infos();
+			}else {
+				searchNews();
+			}
+		}
+
+		function deleteNews() {
+            var text = document.getElementById("input_list").value;
+			var request = sendRequest("POST", "delete_news_meta", text);
+            request.onreadystatechange = function() {
+                if (request.readyState === 4 && request.status === 200) {
+					alert("删除完成！");
+				}else if(request.readyState === 4 && request.status === 400) {
+					alert("信息错误！");
+				}
+                document.getElementById("input_list").value = "";
+			}
+		}
+
+		setAdminInfo();
+		validateAdmin();
+        read_infos();
+        setInterval(read_infos, 3600000);
+
+    </script>
+<body>
+
+<!-- #######  YAY, I AM THE SOURCE EDITOR! #########-->
+<h1 style="text-align: center;"><span style="color: #ff6600;">NewsReader用户管理台</span></h1>
+<hr />
+<div class="left"> <a style="color: blue;font-size:20px">
+输入ID：<br/>
+<textarea 
+	id="input_list" 
+	style="resize:none;width:120px;height:20px;"
+	class="input_users" 
+	style="resize:none"
+	>
+</textarea>
+
+<textarea 
+	id="loop_list" 
+	style="resize:none;position:absolute;left:500px;top:128px;width:45px;height:16px;"
+	class="input_users" 
+	style="resize:none"
+	>
+</textarea>
+
+<textarea 
+	id="search_list" 
+	style="resize:none;position:absolute;left:860px;top:128px;width:55px;height:16px;"
+	class="input_users" 
+	style="resize:none"
+	>
+</textarea>
+
+<button onmousedown="loopPage()" class="button" style="position:absolute;left:560px;top:125px;cursor: pointer;padding: 3px 6px;">跳转</button>
+<button onmousedown="nextPage()" class="button" style="position:absolute;left:620px;top:125px;cursor: pointer;padding: 3px 6px;">下一页</button>
+<button onmousedown="lastPage()" class="button" style="position:absolute;left:690px;top:125px;cursor: pointer;padding: 3px 6px;">上一页</button>
+<button onmousedown="searchNews()" class="button" style="position:absolute;left:935px;top:125px;cursor: pointer;padding: 3px 6px;">查询</button>
+<button onmousedown="document.location.reload()" class="button" style="position:absolute;left:1000px;top:125px;cursor: pointer;padding: 3px 6px;">刷新</button>
+
+</div>
+<div class="right">
+	<input type="text" id="news_num" disabled="disabled" style="border-style:none;position:absolute;left:300px;top:128px;color:green;width:200px;height:20px;font-size:20px;background:none;">
+
+	<div style="position:absolute;left:60px;top:180px">
+        <a style="color: blue;font-size:25px">ID<var><a><br/>
+        <p id="id_list">暂无数据</p>
+    </div>
+
+	<div style="position:absolute;left:180px;top:180px;max-width:880px">
+        <a style="color: blue;font-size:25px">标题<var><a><br/>
+        <p id="title_list" style="display: block;max-width:880px">暂无数据</p>
+    </div>
+
+	<div style="position:absolute;left:600px;top:180px">
+        <a style="color: blue;font-size:25px">链接<var><a><br/>
+        <p id="link_list" style="display: block;max-width:880px">暂无数据</p>
+    </div>
+
+	<div style="position:absolute;left:1200px;top:180px">
+        <a style="color: red;font-size:25px">分类<var><a><br/>
+        <p id="cate_list">暂无数据</p>
+    </div>
+
+	<div style="position:absolute;left:1300px;top:180px">
+        <a style="color: red;font-size:25px">来源<var><a><br/>
+        <p id="source_list">暂无数据</p>
+    </div>
+
+	<div style="position:absolute;left:1400px;top:180px">
+        <a style="color: green;font-size:25px">时间<var><a><br/>
+        <p id="time_list">暂无数据</p>
+    </div>
+
+</div>
+  <button onmousedown="loopToUserManage()" class="button" style="border-style:none;position:absolute;left:1200px;top:50px;color:Brown;width:240px;height:30px;font-size:16px;background:none;">(跳转到用户管理后台)</button>
+
+<div style="position:absolute;left:160px;top:100px">
+    <br/>
+  <button onmousedown="deleteNews()" class="button" style="cursor: pointer;padding: 4px 6px;">点击删除</button>
+    <br/>
+
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+
+</body>
+</html>
+

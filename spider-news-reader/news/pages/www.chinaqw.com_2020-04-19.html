@@ -1,0 +1,810 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "//www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="//www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>中国侨网-华文教育</title>
+    <!--[894,18,1] published at 2020-04-17 17:05:53 from #10 by system,designer:liuxin  maker:liweiwei zhaoqian -->
+    <link href="//www.chinaqw.com/css/hrhq.css" rel="stylesheet" type="text/css" />
+    <style>
+        .banner_jcxz .banner_info {bottom: 0;}
+        .banner .banner_pages{bottom:20px}
+        .qw_hjpdmain_left{    width: 545px;float: left;  }
+        .qw_hjpdmain_right{    width: 420px;float: right;  }
+        .qw_hjpdcon_left{    width: 485px;}
+        .module_hgcy_zy1 li .righttext{    width: 240px;    padding-top: 5px;}
+        .qw_hjpdhwxy_left{float: left;width: 420px;}
+        .qw_hjpdhwxy_right{float: right;width: 560px;}
+        .jfzy_boxdiv_left{width: 500px;}
+        .jfzy_boxdiv{width: 270px;}
+        .jfzy_lt{width: 275px;float: left;    margin-top: 10px;}
+        .hjpdjfzy_title{width: 275px;}
+        .module_hwxy_zy{margin-left: 20px}
+        .module_hwxy_zy li .leftimg,.module_hwxy_zy li  .leftimg img,.module_hwxy_zy li .righttext p{width: 510px;}
+        .banner a.btn_prev, .banner a.btn_next{top:35%}
+    </style>
+    <script src="//www.chinaqw.com/js/jquery1.11.3.js"></script>
+    <base target="_blank"/>
+    <script>
+        /*navlist*/
+
+        function focusBox(o){
+            //alert(00);
+            if(!o) return;
+            //alert(11);
+            var w=420, $o=$('#'+o),i=0,l=0;arr= [],t= null,
+                    $infoLi = $o.find('.banner_info li'), len= $infoLi.length*2,
+                    $ul=$o.find('.banner_pic>ul');
+            $ul.append($ul.html()).css({'width':len*w, 'left': -len*w/2});
+            $infoLi.eq(0).addClass('current');
+            //add banner_pages element
+            arr.push('<div class="banner_pages"><ul>');
+            $infoLi.each(function(i){
+                if(i==0){
+                    arr.push('<li class="current"><span>'+ (i+1) +'</span></li>');
+                }else{
+                    arr.push('<li><span>'+ (i+1) +'</span></li>');
+                }
+            });
+            arr.push('</ul></div>');
+            $o.append(arr.join(''));
+            var $pagesLi = $o.find('.banner_pages li');
+            //mouse
+            $pagesLi.children('span').click(function(){
+                var p = $pagesLi.index($o.find('.banner_pages li.current'));
+                i = $pagesLi.children('span').index($(this));
+                if(i==p) return;
+                l = parseInt($ul.css('left')) + w*(p-i);
+                addCurrent(i,l);
+                return false;
+            })
+            $o.children('a.btn_prev').click(function(){
+                i = $pagesLi.index($o.find('.banner_pages li.current'));
+                (i==0)? i=(len/2-1):i--;
+                l = parseInt($ul.css('left')) + w;
+                addCurrent(i,l);
+                return false;
+            })
+            $o.children('a.btn_next').click(function(){
+                i = ($pagesLi.index($o.find('.banner_pages li.current'))+1)%(len/2);
+                l = parseInt($ul.css('left')) - w;
+                addCurrent(i,l);
+                return false;
+            })
+            //auto focus
+            t = setInterval(init,8000);
+            $o.hover(function(){
+                clearInterval(t);
+            }, function(){
+                t = setInterval(init,8000);
+            });
+            function init(){
+                $o.children('a.btn_next').trigger('click');
+            }
+            //add focus
+            function addCurrent(i,l){
+                if($ul.is(':animated')) return;
+                $ul.animate({'left':l},500,function(){
+                    $o.children('.banner_count').text(i+1);
+                    $infoLi.not($infoLi.eq(i).addClass('current')).removeClass('current');
+                    $pagesLi.not($pagesLi.eq(i).addClass('current')).removeClass('current');
+                    if(l== (1-len)*w){
+                        $ul.css({'left': (1-len/2)*w});
+                    }else if(l== 0){
+                        $ul.css({'left': -len*w/2});
+                    }
+                });
+            }
+        }
+
+        $(function(){
+            focusBox('kakaFocus');
+        })
+
+        //tab
+        function nTabs(thisObj,Num){
+            if(thisObj.className == "active")return;
+            var tabObj = thisObj.parentNode.id;
+            var tabList = document.getElementById(tabObj).getElementsByTagName("li");
+            for(i=0; i <tabList.length; i++)
+            {
+                if (i == Num)
+                {
+                    thisObj.className = "active";
+                    document.getElementById(tabObj+"_Content"+i).style.display = "block";
+                }else{
+                    tabList[i].className = "normal";
+                    document.getElementById(tabObj+"_Content"+i).style.display = "none";
+                }
+            }
+        }
+        function change1(){
+            focusBox1('kakaFocus1');
+            function focusBox1(o1){
+                if(!o1) return;
+
+                var w1=$("#kakaFocus1 .banner_pic").width(), $o1=$('#'+o1),i=0,l=0;arr1= [],t1= null,
+
+                        $infoLi1 = $o1.find('.banner_info li'), len1= $infoLi1.length*2,
+                        $ul1=$o1.find('.banner_pic>ul');
+                $ul1.append($ul1.html()).css({'width':len1*w1, 'left': -len1*w1/2});
+                $infoLi1.eq(0).addClass('current');
+                //add banner_pages element
+                arr1.push('<div class="banner_pages"><ul>');
+                $infoLi1.each(function(i){
+                    if(i==0){
+                        arr1.push('<li class="current"><span>'+ (i+1) +'</span></li>');
+                    }else{
+                        arr1.push('<li><span>'+ (i+1) +'</span></li>');
+                    }
+                });
+                arr1.push('</ul></div>');
+                $o1.append(arr1.join(''));
+                var $pagesLi1 = $o1.find('.banner_pages li');
+                //mouse
+                $pagesLi1.children('span').click(function(){
+                    var p1 = $pagesLi1.index($o1.find('.banner_pages li.current'));
+                    i1 = $pagesLi1.children('span').index($(this));
+                    if(i1==p1) return;
+                    l1 = parseInt($ul1.css('left')) + w1*(p1-i1);
+                    addCurrent1(i1,l1);
+                    return false;
+                })
+                $o1.children('a.btn_prev').click(function(){
+                    i1 = $pagesLi1.index($o1.find('.banner_pages li.current'));
+                    (i1==0)? i1=(len1/2-1):i1--;
+                    l1 = parseInt($ul1.css('left')) + w1;
+                    addCurrent1(i1,l1);
+                    return false;
+                })
+                $o1.children('a.btn_next').click(function(){
+                    i1 = ($pagesLi1.index($o1.find('.banner_pages li.current'))+1)%(len1/2);
+                    l1 = parseInt($ul1.css('left')) - w1;
+                    addCurrent1(i1,l1);
+                    return false;
+                })
+                //auto focus
+                t1 = setInterval(init1,8000);
+                $o1.hover(function(){
+                    clearInterval(t1);
+                }, function(){
+                    t1 = setInterval(init1,8000);
+                });
+                function init1(){
+                    $o1.children('a.btn_next').trigger('click');
+                }
+                //add focus
+                function addCurrent1(i,l){
+                    if($ul1.is(':animated')) return;
+                    $ul1.animate({'left':l},500,function(){
+                        $o1.children('.banner_count').text(i+1);
+                        $infoLi1.not($infoLi1.eq(i).addClass('current')).removeClass('current');
+                        $pagesLi1.not($pagesLi1.eq(i).addClass('current')).removeClass('current');
+                        if(l== (1-len1)*w1){
+                            $ul1.css({'left': (1-len1/2)*w1});
+                        }else if(l== 0){
+                            $ul1.css({'left': -len1*w1/2});
+                        }
+                    });
+                }
+            }
+        }
+
+        $(document).ready(function(){
+
+            change1();
+
+        })
+
+        $(document).ready(function(){
+
+            $("#kakaFocus").mouseover(function(){
+
+                $("#lrbt_show1").show();
+                $("#lrbt_show2").show();
+            });
+            $("#kakaFocus").mouseout(function(){
+                $("#lrbt_show1").hide();
+                $("#lrbt_show2").hide();
+            });
+
+            $("#kakaFocus1").mouseover(function(){
+
+                $("#lrbt_show11").show();
+                $("#lrbt_show12").show();
+            });
+            $("#kakaFocus1").mouseout(function(){
+                $("#lrbt_show11").hide();
+                $("#lrbt_show12").hide();
+            });
+
+        });
+
+    </script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+</head>
+
+<body >
+<!--返回顶部-->
+<style type="text/css">
+    body{background:#fff url(//i3.chinaqw.com/qiaowu/images/hjpd_bg.jpg) repeat-x left 42px;}
+    .index_layer {
+        position: fixed;
+        _position: absolute;
+        width: 60px;
+        right: 350px;
+        bottom: 117px;
+        _bottom: 117px;
+        _height: 150px;
+        z-index: 100;
+    }
+
+    .index_layer .back a {
+        background: url(//i3.chinaqw.com/qiaowu/images/hqhr_back.jpg) no-repeat;
+        width:56px;height:45px;
+        display: block;
+    }
+
+    .index_layer .back a:Hover {
+        background: url(//i3.chinaqw.com/qiaowu/images/hqhr_back.jpg) no-repeat;
+        width:56px;height:45px;
+        display: block;
+    }
+
+    .menuTop1{ top: 555px;}
+    .menuBtm1{top:0px;_top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0))); _margin-top:0px;}
+
+</style>
+
+<div  class="index_layer ie6fixedBR" id="full" >
+
+    <div class="back" style="width:60px;height:60px;margin-top:8px;" id="newsbacktop"><a href='#qw_top' class='fhtop_a' target='_self'></a></div>
+
+</div>
+<Script>
+    (function() {
+        var backToTopTxt1 = $(".index_layer").html(),
+                backToTopEle1 = backToTopTxt1, backToTopFun1 = function() {
+                    var stback = $(document).scrollTop(), winh1 = $(window).height();
+                    $(".index_layer").show();
+                    (stback>0)? $("#newsbacktop").css('display','block'): $("#newsbacktop").css('display','none');
+                    //IE6下的定位
+                    if (!window.XMLHttpRequest) {
+                        $(".index_layer").css("top", stback + winh1 - 550);
+                    }
+                };
+        $(window).bind("scroll", backToTopFun1);
+        backToTopFun1();
+
+    })();
+
+    $(document).ready(function(){
+        var pw_heigth=$(window).height();
+        // alert(pw_heigth);
+        var screenwidth=$(window).width(); //浏览器当前窗口可视区域宽度
+        //$("#layer").css("right",((screenwidth -1004) /2)-100);
+        Box=document.getElementById("full");
+
+        Box.style.right = ((screenwidth -1004) /2)-80 + "px";
+        qw_banner_right=$("div.qw_hjpdbanner1_right");
+        width1=(screenwidth-1000)/2;
+        qw_banner_right.css('width',width1+'px');
+        qw_banner_right.css('right','-'+width1+'px');
+
+        if(screenwidth <= 1024){
+            Box.style.right =0+"px";
+
+        }
+        if(pw_heigth <= 780){
+            Box.style.bottom =0+"px";
+
+        } else{
+            Box.style.bottom =117+"px";
+        }
+        $(window).resize(function() {
+
+            var pw_heigth=$(window).height();
+            // alert(pw_heigth);
+            var screenwidth=$(window).width(); //浏览器当前窗口可视区域宽度
+            //$("#layer").css("right",((screenwidth -1004) /2)-100);
+            Box=document.getElementById("full");
+
+            Box.style.right = ((screenwidth -1004) /2)-80 + "px";
+            qw_banner_right=$("div.qw_hjpdbanner1_right");
+            width1=(screenwidth-1000)/2;
+            qw_banner_right.css('width',width1+'px');
+            qw_banner_right.css('right','-'+width1+'px');
+            if(screenwidth <= 1024){
+                Box.style.right =0+"px";
+
+            }
+            if(pw_heigth <= 780){
+                Box.style.bottom =0+"px";
+
+            } else{
+                Box.style.bottom =117+"px";
+            }
+
+        });
+
+    });
+
+</Script>
+<style>
+    .iphoneb .qw_hjpdbanner1 .qw_hjpdbanner1_right{display:none;}
+    .banner .banner_info,.banner .banner_info_bg{bottom:47px;}
+</style>
+
+<script>
+    function browserRedirect() {
+        var sUserAgent = navigator.userAgent.toLowerCase();
+        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+        var bIsAndroid = sUserAgent.match(/android/i) == "android";
+        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+        //if (!(bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) ){
+        //window.location.href="//m.chinanews.com/apps/pc.html";
+        //}
+    }
+    browserRedirect();
+    var mynum=window.location.search;
+    var mylocation=window.location.href;
+
+    var sUserAgent = navigator.userAgent;
+
+    if (/(iPhone|iPod|iOS|iPad)/i.test(navigator.userAgent)) {
+        //alert(navigator.userAgent);
+        // window.location.href="//m.chinanews.com/apps/iphone.html";
+
+        var body = document.getElementsByTagName('body')[0];
+        body.className="iphoneb";
+
+    }else if(/(Android)/i.test(navigator.userAgent)){
+        //alert(navigator.userAgent);
+        //window.location.href="//m.chinanews.com/apps/android.html";
+        var body = document.getElementsByTagName('body')[0];
+        body.className="iphoneb";
+
+    }
+    else{
+    }
+
+</script>
+<!--返回顶部结束-->
+<!--div class="qw_list_top" id="qw_top"-->
+<!--pv统计插码s-->        
+
+<!--pv统计插码e-->   
+<style>
+.qw_list_top_left span a{padding:0 1px;}
+</style>
+
+<div class="qw_list_top" id="qw_top">
+<div class="w1000 m_center">
+	<div class="qw_list_top_left"><strong><a href="/">侨网首页</a></strong>
+     <span>
+        <a href="/hqhr/">华侨华人</a>
+        <a href="/zhwh/">中华文化</a>
+        <a href="/hwjy/">华文教育</a>
+        <a href="/jjkj/">经济科技</a>
+        <a href="/gqqj/">归侨侨眷</a>
+        <a href="/hzzx/">华助中心</a>
+        <a href="/qx/">侨乡传真</a>
+        <a href="/hdfw/">互动与服务</a>
+        <a href="http://www.chinaqw.com/hqly/index.shtml">环球旅游</a>
+    </span>
+    </div>
+    <div class="qw_logoright qw_logoright_list" >
+    	<div class="qw_logoright_ul">
+          <ul>
+          	<script type="text/javascript">
+          //设为首页
+function SetHome(url){
+
+        if (document.all) {
+
+            document.body.style.behavior = 'url(#default#homepage)'; 
+            document.body.setHomePage(url)
+
+        }else{
+
+            alert("抱歉，您的浏览器不支持自动设置首页, 请使用浏览器菜单手动设置!");
+
+        }
+
+    }
+          </script>
+<li class="swsy"><a onClick="SetHome('http://www.chinaqw.com/')">设为首页</a></li>
+<!--<li class="jrzm"><a href="http://www.chinaqw.com/news/desktop_shortcut.htm">加入桌面</a></li>
+<li class="khd"><a>客户端</a></li>-->
+<!-- li class="khd"><a href="http://big5.chinaqw.com">繁体版</a></li-->
+          </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+<!--div class="qw_list_top" id="qw_top"-->
+<div class="qw_hqhrbanner">
+    <div class="qw_hqhrlogo"><a href="//www.chinaqw.com/"></a></div>
+    <div class="qw_hqhrgg"><img src="http://i3.chinaqw.com/qiaowu/images/banner2_03.jpg" width="740" height="80" alt="全球华侨华人的网上家园"/></div>
+    <div class="clear"></div>
+</div>
+
+<div class="qw_hjpdbanner1">
+    <div class="qw_hjpdbanner1_left"></div>
+    <div class="qw_hjpdbanner1_right"></div>
+    <div class="qw_hqhrbanner1_box">
+        <div class="qw_hqhrbanner1_box1 qw_hqhrbanner1_boxhqhr1">
+            <a href="http://channel.chinaqw.com/cns/c/hwjy-hjzx.shtml">华教资讯</a> | <a href="http://channel.chinaqw.com/cns/c/hwjy-yxdt.shtml">院校动态</a> | <a href="http://channel.chinaqw.com/cns/c/hwjy-hjrw.shtml">华教人物</a> | <a href="http://channel.chinaqw.com/cns/c/hwjy-qsnhd.shtml">青少年活动</a> | <a href="http://channel.chinaqw.com/cns/c/hwjy-lwxzw.shtml">老外学中文</a> | <a href="http://channel.chinaqw.com/cns/c/hwjy-kzxy.shtml">孔子学院</a> | <a href="http://channel.chinaqw.com/u/hwjy-jfzy.shtml">教辅资源</a> | <a href="http://channel.chinaqw.com/u/hwjy-jxxd.shtml">教学心得</a></div>
+        <div class="qw_hqhrbanner1_box2">
+            <div class="leftgd">
+                <marquee width="607" height="32" direction="left" scrolldelay="1" scrollamount="2">
+                    &nbsp;<!--滚动新闻 s-->
+                    <!--[894,7,14] published at 2020-04-19 17:55:11 from #10 by 王嘉怡--> 
+    &nbsp;·<a href="/hdfw/2020/04-19/253971.shtml">驻开普敦总领馆举行中企和侨界抗疫物资捐赠仪式</a>	    &nbsp;·<a href="/hdfw/2020/04-19/253970.shtml">中使馆提醒在阿同胞关注阿塞拜疆防疫管控延长措施</a>	    &nbsp;·<a href="/hqhr/2020/04-19/253965.shtml">海外琼籍留学生：疫情中，我们感到了祖国和侨社乡亲的温暖</a>	    &nbsp;·<a href="/hdfw/2020/04-19/253967.shtml">中国驻韩使馆向在韩劳务人员发“健康包”</a>	    &nbsp;·<a href="/hqhr/2020/04-19/253969.shtml">施一公的“开学第一课”：独立思考 尊重科学</a>	    &nbsp;·<a href="/hqhr/2020/04-19/253968.shtml">欧洲时报：罗马尼亚华人小区互帮互助抗击疫情</a>	    &nbsp;·<a href="/hqly/2020/04-19/253966.shtml">日本新华侨报：受疫情影响 赴日外国游客减少</a>	    &nbsp;·<a href="/hqhr/2020/04-19/253964.shtml">美国星岛日报：旧金山中餐馆开拓外卖业务吸引顾客</a>	    &nbsp;·<a href="/hqhr/2020/04-19/253963.shtml">菲律宾世界日报：菲律宾华人社团向当地捐赠物资</a>	    &nbsp;·<a href="/kong/2020/04-19/253962.shtml">福州唯一水中寺——金山寺</a>	    &nbsp;·<a href="http://www.chinaqw.com/hqly/hd2011/2020/04-19/40206.shtml">全球明星举行在线抗疫义演</a>	    &nbsp;·<a href="http://www.chinaqw.com/hqly/hd2011/2020/04-19/40202.shtml">美国休斯敦民众超市采购 疫情期间保持社交距离</a>	    &nbsp;·<a href="/qx/2020/04-19/253958.shtml">福建石狮打造食品贸易港 侨乡“古早味”拼单出口</a>	    &nbsp;·<a href="http://www.chinaqw.com/hqly/hd2011/2020/04-19/40198.shtml">疫情下的悉尼：民众享受运动时光</a>	    &nbsp;·<a href="/sp/2020/04-19/253957.shtml">今年全球首对圈养大熊猫双胞胎幼仔满月 分别取名为“热干面”“蛋烘糕”</a>	    &nbsp;·<a href="/sp/2020/04-19/253956.shtml">女子戴假发头冒蓝光 里面藏着作弊工具</a>	    &nbsp;·<a href="/kong/2020/04-19/253955.shtml">浦东开发开放30年：创业“热土”承载改革开放使命再出发</a>	    &nbsp;·<a href="/zhwh/2020/04-19/253954.shtml">Q弹美味的汕头鱼丸：海外潮籍乡亲舌尖上的亲情纽带 </a>	    &nbsp;·<a href="/hqhr/2020/04-19/253953.shtml">那个入境时泪崩的留学生，做志愿者了</a>	    &nbsp;·<a href="/hqhr/2020/04-19/253952.shtml">柬华企老板与三千柬籍员工共战疫：防控不能有“一丝的松懈”</a>	
+                    <!--滚动新闻 e-->
+                </marquee>
+            </div>
+            <div class="searchright">
+                <div class="">
+                    <!--搜索qw_listsearch s-->
+                    <!--[894,3,7] published at 2019-03-21 14:13:26 from #10 by 杨翼峰-->
+
+<input type="text" value="请输入关键字" onclick="this.value='',this.style.color='#000'" name="q" id="q" class="input1" onkeydown="checksubmit()">
+
+<input name="" type="button" class="input2" onclick="submitFun()" />
+<script type="text/javascript"> 
+
+function checksubmit(){
+    var code = event.keyCode;
+    if(code == 13) submitFun();
+  }
+
+function submitFun() {
+
+var hotword=document.getElementsByName('q')[0].value;
+
+if (hotword==''){
+
+alert('请输入关键字!');
+
+return false;
+
+}
+else
+{
+window.open("http://sou.chinaqw.com/search?q="+encodeURIComponent(hotword));
+ }
+
+}
+
+</script>  
+
+   
+                    <!--搜索qw_listsearch e-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="qw_hqhrmain">
+    <div class="qw_main_box">
+
+        <div class="mt10">
+            <div class="qw_hjpdmain_left">
+                <!---->
+                <div >
+                    <!---->
+                   <div class="xwzxdd-dbt-hhpd">
+                        <h1>
+                           <a href="/hwjy/2020/04-17/253816.shtml">汉语教师海外任教：文化互动不能少</a>
+                        </h1>
+                    </div>
+                    <div class="new_con_border_b ">
+                        <ul class="module_con_ulhjpd">
+                            <li><div class="left_list_hqhr_bt"><a href="/hwjy/2020/04-17/253856.shtml">温州为旅欧华侨子女开网课:瓯欧连心 停课不停学</a></div><div class="time_hqhr">2020-4-17</div></li><li><div class="left_list_hqhr_bt"><a href="/hwjy/2020/04-17/253797.shtml">印尼外派老师：治“熊孩子” 沟通方式很重要</a></div><div class="time_hqhr">2020-4-17</div></li><li><div class="left_list_hqhr_bt"><a href="/hwjy/2020/04-17/253774.shtml">科罗拉多州中文比赛的别样风景：见证中文之花绽放</a></div><div class="time_hqhr">2020-4-17</div></li><li><div class="left_list_hqhr_bt"><a href="/hwjy/2020/04-17/253778.shtml">中国驻尼泊尔使馆召开在尼文教机构防疫视频会议</a></div><div class="time_hqhr">2020-4-17</div></li><li><div class="left_list_hqhr_bt"><a href="/hwjy/2020/04-16/253680.shtml">停课不停学 马来西亚培民中学华乐团进行视频教学</a></div><div class="time_hqhr">2020-4-16</div></li><li><div class="left_list_hqhr_bt"><a href="/hwjy/2020/04-16/253675.shtml">马来西亚退休华小教师用画笔绘出纯朴乡土味</a></div><div class="time_hqhr">2020-4-16</div></li><li><div class="left_list_hqhr_bt"><a href="/hwjy/2020/04-16/253666.shtml">线上教学影响进度 马来西亚华校教师探索新模式</a></div><div class="time_hqhr">2020-4-16</div></li><li><div class="left_list_hqhr_bt"><a href="/hwjy/2020/04-16/253660.shtml">马来西亚培南独中学生写歌致敬抗疫勇士</a></div><div class="time_hqhr">2020-4-16</div></li>
+                        </ul>
+                    </div>
+                    <!---->
+                </div>
+
+                <!---->
+
+            </div>
+            <div class="qw_hjpdmain_right">
+                <!-- sliderimg start -->
+                <div class="banner" id="kakaFocus">
+                    <a class="btn_prev" id="lrbt_show1" style="display:none" title="上一个" href="#">Previous</a>
+                    <a class="btn_next" id="lrbt_show2" style="display:none" title="下一个" href="#">Next</a>
+                    <!-- 主题图片s-->
+                    <!--include virtual="/part/hwjy/19/1.html"-->
+                    <div class="banner_pic" id="gdt"> 
+<ul>
+
+		 <li><a href="/hwjy/2020/04-14/253418.shtml"><img width="420" height="240" src="/hwjy/2020/04-14/U892P894T5D253418F42DT20200414151953.jpg" alt="中国华教基金会实景课堂《奶奶请我们吃中国菜》开课" /></a></li>
+
+		 <li><a href="/hwjy/2020/04-10/253062.shtml"><img width="420" height="240" src="/hwjy/2020/04-10/U892P894T5D253062F42DT20200410155020.jpg" alt="网上教中文：形式多样重技巧" /></a></li>
+
+		 <li><a href="/hwjy/2020/04-08/252764.shtml"><img width="420" height="240" src="/hwjy/2020/04-08/U892P894T5D252764F42DT20200408161613.jpg" alt="实景课堂《爷爷去公园打太极拳》开课" /></a></li>
+
+		 <li><a href="/hwjy/2020/04-08/252673.shtml"><img width="420" height="240" src="http://i2.chinanews.com/simg/ypt/2020/200408/116191430_qsite.jpg" alt="暨南大学第一、二批援湖北医护人员平安返校" /></a></li>
+
+</ul> 
+</div>
+<div class="banner_info">
+<ul>
+
+		 <li><a href="/hwjy/2020/04-14/253418.shtml">中国华教基金会实景课堂《奶奶请我们吃中国菜》开课</a></li>
+
+		 <li><a href="/hwjy/2020/04-10/253062.shtml">网上教中文：形式多样重技巧</a></li>
+
+		 <li><a href="/hwjy/2020/04-08/252764.shtml">实景课堂《爷爷去公园打太极拳》开课</a></li>
+
+		 <li><a href="/hwjy/2020/04-08/252673.shtml">暨南大学第一、二批援湖北医护人员平安返校</a></li>
+
+</ul>
+</div>
+<div class="banner_info_bg"></div>
+                    <!-- 主题图片e-->
+                </div>
+                <!-- sliderimg end -->
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!--华教资讯-->
+<div class="qw_main" id="hjzx">
+
+    <div class="qw_main_box">
+        <div class="hjpd_boxmod ">
+            <div class="qw_hjpdcon_left">
+                <div class="hjpdlife_title ">
+                    <div class="life_title_img"></div>
+                    <div class="life_title_text">
+                        <a href="http://channel.chinaqw.com/cns/c/hwjy-hjzx.shtml">华教资讯</a>
+                    </div>
+                </div>
+                <div class="module_hgcy_zy1 mt10">
+  <ul>
+     <li>
+          <div class="leftimg">
+                            <a href="/hwjy/2020/04-17/253774.shtml"><img src="/hwjy/2020/04-17/U892P894T5D253774F42DT20200417094719.jpg"></a>
+                        </div>
+                        <div class="righttext">
+                            <strong><a href="/hwjy/2020/04-17/253774.shtml">科罗拉多州中文比赛的别样风景：见证中文之花绽放</a></strong>
+                        </div><div class="clear"></div>
+     </li>
+  </ul>
+</div>
+<div class="new_con_border_b ">
+   <ul class="module_con_ulpd">
+       <li><a href="/hwjy/2020/04-17/253856.shtml">温州为旅欧华侨子女开网课:瓯欧连心 停课不停学</a></li><li><a href="/hwjy/2020/04-17/253778.shtml">中国驻尼泊尔使馆召开在尼文教机构防疫视频会议</a></li><li><a href="/hqhr/2020/04-17/253760.shtml">泰国《世界日报》：泰中侨商联合会为华文教师和留学生捐赠物资</a></li><li><a href="/hwjy/2020/04-16/253678.shtml">马来西亚民万华小副校长荣休 教职员学生欢送</a></li>
+   </ul>
+</div>
+            </div>
+            <div class="qw_hjpdcon_left">
+                <div class="hjpdlife_title ">
+                    <div class="life_title_img"></div>
+                    <div class="life_title_text">
+                        <a href="http://channel.chinaqw.com/cns/c/hwjy-yxdt.shtml">院校动态</a>
+                    </div>
+                </div>
+                <div class="new_con_border_b">
+                    <ul class="module_con_ulpd">
+                        <li><a href="/hwjy/2020/04-08/252673.shtml">暨南大学第一、二批援湖北医护人员平安返校</a></li><li><a href="/hwjy/2020/03-29/251460.shtml">暨南大学在校研究生获赠千枚自研中药防疫香囊</a></li><li><a href="/hwjy/2020/03-28/251436.shtml">暨南大学获捐价值10万元的一次性医用防护口罩</a></li><li><a href="/hwjy/2020/03-23/250600.shtml">庆建校101周年 新加坡华侨中学办虚拟宴会筹款行善</a></li><li><a href="/hwjy/2020/03-16/249698.shtml">柬埔寨全国华校即日起暂时停课</a></li><li><a href="/hwjy/2020/03-13/249320.shtml">亲近自然 马来西亚一华小学生到户外学习</a></li><li><a href="/hwjy/2020/03-13/249310.shtml">柬埔寨广肇学校推出校园管理系统APP</a></li><li><a href="/hwjy/2020/03-13/249304.shtml">马来西亚吉打州新民国民型华文中学举办田径赛</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="hjpd_boxmod ">
+            <div class="qw_hjpdcon_left">
+                <div class="hjpdlife_title ">
+                    <div class="life_title_img"></div>
+                    <div class="life_title_text">
+                        <a href="http://channel.chinaqw.com/cns/c/hwjy-hjrw.shtml">华教人物</a>
+                    </div>
+                </div>
+                <div class="new_con_border_b">
+                    <ul class="module_con_ulpd">
+                        <li><a href="/hqhr/2020/04-05/252437.shtml">海外留守记丨生日那天，收到的第一个礼物竟是停课</a></li><li><a href="/hwjy/2020/03-23/250623.shtml">泰国孔子学院教师：在汉语教学中和学生一起成长</a></li><li><a href="/hwjy/2020/03-22/250575.shtml">印尼外派教师：无惧疫情来袭，坚守华文阵地</a></li><li><a href="/hwjy/2020/03-20/250411.shtml">投身杏坛34年 马来西亚一华小教师荣休</a></li><li><a href="/hwjy/2020/03-17/249852.shtml">执教33年 马来西亚霹雳州育群华中教师荣休</a></li><li><a href="/hwjy/2020/03-11/248748.shtml">马来西亚霹雳州怡保三才华小为退休教师举办欢送会</a></li><li><a href="/hwjy/2020/02-23/246622.shtml">加拿大侨胞成立“支持武汉行动小组”购买物资援助</a></li><li><a href="/hwjy/2020/02-21/246513.shtml">为自己的家乡出一份力 ——广西外派教师战“疫”小记</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="qw_hjpdcon_left">
+                <div class="hjpdlife_title ">
+                    <div class="life_title_img"></div>
+                    <div class="life_title_text">
+                        <a href="http://channel.chinaqw.com/cns/c/hwjy-qsnhd.shtml">青少年活动</a>
+                    </div>
+                </div>
+                <div class="module_hgcy_zy1 mt10">
+  <ul>
+     <li>
+          <div class="leftimg">
+                            <a href="/hwjy/2020/03-13/249274.shtml"><img src="/hwjy/2020/03-13/U928P894T5D249274F42DT20200313132213.jpg"></a>
+                        </div>
+                        <div class="righttext">
+                            <strong><a href="/hwjy/2020/03-13/249274.shtml">日本各地小学生手绘明信片为中国抗疫加油</a></strong>
+                        </div><div class="clear"></div>
+     </li>
+  </ul>
+</div>
+<div class="new_con_border_b ">
+   <ul class="module_con_ulpd">
+       <li><a href="/hwjy/2020/03-27/251322.shtml">丹麦华裔子弟来信：挂念亲人朋友 致敬医护人员</a></li><li><a href="/hwjy/2020/03-17/249805.shtml">浙籍海外华裔青少年共抗疫情绘画征集令</a></li><li><a href="/hwjy/2020/03-16/249704.shtml">马来西亚马六甲招茂华小数项比赛获佳绩</a></li><li><a href="/hwjy/2020/03-16/249581.shtml">赞比亚卡萨玛女子中学举办第三届“汉字书写大赛”</a></li>
+   </ul>
+</div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+        <div class="hjpd_boxmod ">
+            <div class="qw_hjpdcon_left">
+                <div class="hjpdlife_title ">
+                    <div class="life_title_img"></div>
+                    <div class="life_title_text">
+                        <a href="http://channel.chinaqw.com/cns/c/hwjy-lwxzw.shtml">老外学中文</a>
+                    </div>
+                </div>
+                <div class="module_hgcy_zy1 mt10">
+  <ul>
+     <li>
+          <div class="leftimg">
+                            <a href="/hwjy/2020/03-20/250337.shtml"><img src="/hwjy/2020/03-20/U892P894T5D250337F42DT20200320091611.jpg"></a>
+                        </div>
+                        <div class="righttext">
+                            <strong><a href="/hwjy/2020/03-20/250337.shtml">斯里兰卡学子的中文梦：心怀梦想 全力奔跑</a></strong>
+                        </div><div class="clear"></div>
+     </li>
+  </ul>
+</div>
+<div class="new_con_border_b ">
+   <ul class="module_con_ulpd">
+       <li><a href="/hwjy/2020/04-10/253036.shtml">外国留学生倒时差同步学习 向家乡分享中国抗疫经验</a></li><li><a href="/hwjy/2020/04-08/252694.shtml">在华留学生：当志愿者是难忘的经历</a></li><li><a href="/hwjy/2020/04-05/252431.shtml">美国小伙创作中文“教材”：“学中文如登山”</a></li><li><a href="/hwjy/2020/03-31/251699.shtml">乐于助人 马来族姑娘在新加坡学华语当社工</a></li>
+   </ul>
+</div>
+            </div>
+            <div class="qw_hjpdcon_left">
+                <div class="hjpdlife_title ">
+                    <div class="life_title_img"></div>
+                    <div class="life_title_text">
+                        <a href="http://channel.chinaqw.com/cns/c/hwjy-kzxy.shtml">孔子学院</a>
+                    </div>
+                </div>
+                <div class="new_con_border_b">
+                    <ul class="module_con_ulpd">
+                        <li><a href="/hdfw/2020/04-15/253507.shtml">驻拉合尔总领事与领区孔子学院举行防疫视频会议</a></li><li><a href="/hqhr/2020/04-09/252866.shtml">匈牙利《新导报》：匈牙利侨胞为佩奇大学孔院捐防疫物资</a></li><li><a href="/hwjy/2020/04-03/252294.shtml">全球战疫：印尼孔子学院“云端”汉语教学忙</a></li><li><a href="/hwjy/2020/04-03/252255.shtml">多方助力英国谢菲尔德大学孔子学院齐心抗疫</a></li><li><a href="/hqhr/2020/03-30/251609.shtml">匈牙利侨胞为五家孔院教师赠送防疫口罩</a></li><li><a href="/hwjy/2020/03-29/251490.shtml">泰国孔子课堂举办“中泰携手共抗疫情”绘画大赛</a></li><li><a href="/hwjy/2020/03-27/251342.shtml">葡萄牙孔院师生齐努力 线上教学战“疫”情</a></li><li><a href="/hwjy/2020/03-27/251319.shtml">中方合作院校伸援手  世界各国孔院同心抗疫</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!--华教资讯-->
+<!--教材下载-->
+<div class="qw_main" id="jcxz">
+    <div class="qw_main_box">
+        <div class="hjpd_boxmod ">
+            <div class="hjpd_jfzybox">
+                <div class="hjpd_jfzybox_hegight">
+                    <div class="jfzy_lt">
+                        <div class="hjpdjfzy_title ">
+                            <div class="life_title_text"><a href="http://channel.chinaqw.com/u/hwjy-jfzy.shtml">教辅资源</a></div>
+                        </div>
+                        <div class="mt10 jfzy_boxdiv_top">
+                            <div class="jfzy_boxdiv">
+                                <div class="mt5 ">
+                                    <ul class="module_con_ulhjpd">
+                                        <li><a href="/hwjy/2020/04-13/253267.shtml">杜老师语文信箱：“欢送……凯旋”的说法不妥</a></li><li><a href="/hwjy/2020/04-07/252568.shtml">杜老师语文信箱：“复工复产”的意思</a></li><li><a href="/hwjy/2020/03-30/251531.shtml">“支援”和“驰援”的不同</a></li><li><a href="/hwjy/2020/03-23/250683.shtml">杜老师语文信箱：连词“同时”的用法</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="jfzy_lt">
+                        <div class="hjpdjfzy_title ">
+                            <div class="life_title_text"><a href="http://channel.chinaqw.com/u/hwjy-jxxd.shtml">教学心得</a></div>
+                        </div>
+                        <div class="mt10 jfzy_boxdiv_top">
+                            <div class="jfzy_boxdiv">
+                                <div class="mt5 ">
+                                    <ul class="module_con_ulhjpd">
+                                        <li><a href="/hwjy/2020/04-17/253816.shtml">汉语教师海外任教：文化互动不能少</a></li><li><a href="/hwjy/2020/04-17/253797.shtml">外派老师：治“熊孩子” 沟通方式很重要</a></li><li><a href="/hwjy/2020/04-10/253031.shtml">小小华校成长记：因为有爱，一路芬芳</a></li><li><a href="/hwjy/2020/04-10/252967.shtml">外派教师坚守岗位 教学防疫两不误</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+
+                    <div class="module_hwxy_zy ">
+                        <ul>
+                            <li>
+                                <div class="leftimg">
+                                    <a href="//www.bjhwxy.com"><img src="//i3.chinaqw.com/qiaowu/images/hwjy-bjhwxy11.jpg"></a>
+                                </div>
+                                <div class="righttext">
+                                    <p>北京华文学院(原北京归国华侨学生补习学校、北京中国语言文化学校)是国务院侨务办公室直属华文教育专业院校，是中国唯一一所专门从事华文教育的专业院校……<a href="//www.bjhwxy.com">[更多]</a></p>
+                                </div>
+                                <div class="clear"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="qw_hjpdcon_leftjcxz">
+                <!-- sliderimg start -->
+                <div class="hjpd_jcxzbox">
+                    <div class="hjpdjcxz_title ">
+                        <div class="life_title_text">教材下载</div>
+                    </div>
+                    <div class="banner_jcxz" id="kakaFocus1">
+                        <a class="btn_prev" id="lrbt_show11" style="display:none" title="上一个" href="#">Previous</a>
+                        <a class="btn_next" id="lrbt_show12" style="display:none" title="下一个" href="#">Next</a>
+                        <!--教材下载s-->
+                        <div class="banner_pic" id="gdt"> 
+                            <ul>
+                                <li><a href="http://www.hwjyw.com/textbooks/introduction/hanyu/200709/t20070906_6092.shtml"><img width="534" height="348" src="http://www.chinaqw.com/part/hwjy/19/U416P894T19D8F335DT20140423160234.jpg" alt="《汉语》" /></a></li>
+                                <li><a href="http://www.hwjyw.com/textbooks/introduction/zhongwen/200709/t20070906_6091.shtml"><img width="534" height="348" src="http://www.chinaqw.com/part/hwjy/19/U416P894T19D8F338DT20140423160234.jpg" alt="《中文》" /></a></li>
+                                <li><a href="http://www.hwjyw.com/textbook/jczy.shtml"><img width="534" height="348" src="http://www.chinaqw.com/part/hwjy/19/U416P894T19D8F341DT20140423160234.jpg" alt="《汉语教材》" /></a></li>
+                                <li><a href="http://www.hwjyw.com/textbooks/introduction/youerhanyu/200709/t20070924_7579.shtml"><img width="534" height="348" src="http://www.chinaqw.com/part/hwjy/19/U416P894T19D8F344DT20140423160234.jpg" alt="《幼儿汉语》" /></a></li>
+                    
+                            </ul> 
+                        </div>
+                        <div class="banner_info">
+                            <ul>
+				<li><a href="http://www.hwjyw.com/textbooks/introduction/hanyu/200709/t20070906_6092.shtml">《汉语》</a></li>
+                                <li><a href="http://www.hwjyw.com/textbooks/introduction/zhongwen/200709/t20070906_6091.shtml">《中文》</a></li>
+                                <li><a href="http://www.hwjyw.com/textbook/jczy.shtml">《汉语教材》</a></li>
+                                <li><a href="http://www.hwjyw.com/textbooks/introduction/youerhanyu/200709/t20070924_7579.shtml">《幼儿汉语》</a></li>
+                    
+                            </ul>
+                        </div>
+                        <!-- 教材下载e-->
+                    </div>
+                </div>
+                <!-- sliderimg end -->
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!--教材下载-->
+<!--华文学院-->
+<div class="qw_main" id="hwxy">
+    <div class="qw_main_box">
+        <div class="hjpd_boxmod ">
+            <div style="margin-top: 15px;float: left"><a href="//www.jnu.edu.cn/jnu2014/"><img src="//i3.chinaqw.com/qiaowu/images/jndx01.jpg"></a></div>
+            <div style="margin: 15px 0 0 12px;float: left"><a href="//www.hqu.edu.cn/"><img src="//i3.chinaqw.com/qiaowu/images/hqdx01.jpg"></a></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!--华文学院-->
+
+<div class="qw_foot_hqhr ">
+    <!--qw_foot s-->
+    <strong><div><a href="http://www.chinaqw.com/kong/2014/06-06/5680.shtml" target="_blank">网站介绍</a> | <a href="http://www.chinaqw.com/kong/2014/06-10/6015.shtml" target="_blank">联系我们</a> | <a href="http://www.chinaqw.com/ads.html" target="_blank">广告服务</a> | <a href="mailto:huaren@chinanews.com.cn">供稿信箱</a> | <a href="http://www.chinaqw.com/kong/2016/06-12/91569.shtml">版权声明</a> | <a href="http://www.chinaqw.com/gg/2017/03-17/131826.shtml">招聘启事</a></div></strong>
+<p>
+    中国侨网版权所有，未经授权禁止复制和建立镜像 <a href="http://www.miibeian.gov.cn/" target="_blank">[京ICP备05067153号]</a> [京公网安备:110102001262] <a href="http://net.china.com.cn/chinese/index.htm" target="_blank">[不良和违法信息举报]</a></p>
+<p>Copyright<span style="font-family: '微软雅黑';">&#169;</span>2003-2020 chinaqw.com. All Rights Reserved</p>
+<a href="http://www.chinaqw.com/"><img width="120 "src="http://i3.chinaqw.com/qiaowu/images/logo.png" alt="关注侨网微信"/></a>
+    <!--qw_foot e-->
+</div>
+</body>
+</html>
